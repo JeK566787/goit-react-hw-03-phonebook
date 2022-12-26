@@ -10,6 +10,22 @@ export class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const contacts = localStorage.getItem('contacts');
+    console.log('contacts:', contacts);
+    const parsedContacts = JSON.parse(contacts);
+    console.log('parsedContacts:', parsedContacts);
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   addContact = state => {
     const repeatCheck = this.state.contacts.find(contact => {
       return contact.text === state.name;
